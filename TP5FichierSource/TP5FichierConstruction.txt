@@ -1,0 +1,95 @@
+drop schema Cinéma;
+-- Création du schéma
+CREATE SCHEMA Cinéma;
+
+-- Création des tables;
+CREATE TABLE Personne(
+idPersonne INTEGER PRIMARY KEY,
+nom VARCHAR(30),
+prénom VARCHAR(30));
+
+CREATE TABLE Film(
+idFilm INTEGER PRIMARY KEY,
+idRéalisateur INTEGER,
+titre VARCHAR(50),
+genre VARCHAR(20),
+année YEAR 
+);
+
+CREATE TABLE Jouer(
+idActeur INTEGER,
+idFilm INTEGER,
+rôle VARCHAR(15),
+CONSTRAINT pk_Jouer PRIMARY KEY (idActeur,idFilm)
+);
+
+CREATE TABLE Cinema(
+idCinema INTEGER PRIMARY KEY,
+nom VARCHAR(20),
+adresse VARCHAR(40)
+);
+
+CREATE TABLE Projection(
+idCinema INTEGER,
+idFilm INTEGER,
+jour DATE,
+CONSTRAINT pk_Projection PRIMARY KEY (idCinema,idFilm)
+);
+
+
+
+SHOW TABLES FROM cinéma;
+show table status from cinéma;
+
+DESCRIBE Personne;
+DESCRIBE Jouer;
+DESCRIBE Cinema;
+DESCRIBE Projection;
+DESCRIBE Film;
+
+LOAD  DATA LOCAL INFILE 'D:/Karine/IUT/BaseDonnees/TP/TP5FichierSource/Cinema.txt'
+INTO TABLE Cinema
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n';
+
+SELECT * FROM Cinema;
+
+LOAD  DATA LOCAL INFILE 'D:/Karine/IUT/BaseDonnees/TP/TP5FichierSource/Projection.txt'
+INTO TABLE Projection
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n';
+
+SELECT * FROM Projection;
+
+
+LOAD  DATA LOCAL INFILE 'D:/Karine/IUT/BaseDonnees/TP/TP5FichierSource/Jouer.txt'
+INTO TABLE Jouer
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n';
+
+SELECT * FROM Jouer;
+
+
+LOAD  DATA LOCAL INFILE 'D:/Karine/IUT/BaseDonnees/TP/TP5FichierSource/Personne.txt'
+INTO TABLE Personne
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n';
+
+SELECT nom FROM Personne WHERE prénom LIKE '%i%';
+
+LOAD  DATA LOCAL INFILE 'D:/Karine/IUT/BaseDonnees/TP/TP5FichierSource/Film.txt'
+INTO TABLE Film
+FIELDS TERMINATED BY 'film,'
+LINES TERMINATED BY '\n';
+
+SELECT * FROM Film;
+
+
+SET SQL_SAFE_UPDATES=0;
+
+DELETE FROM JOUER WHERE  idfilm=9 LIMIT 1;
+DELETE FROM PROJECTIOn WHERE  idfilm=9 LIMIT 1;
+DELETE FROM PROJECTIOn WHERE  idfilm=11 LIMIT 1;
+
+alter table projection add constraint fk_projection_cinema Foreign key (idCinema) references cinema(idCinema);
+
